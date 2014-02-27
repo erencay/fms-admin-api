@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "activesupport"
   s.add_runtime_dependency "colorize"
+  s.add_development_dependency "minitest", '3.2.0'
   s.add_development_dependency "webmock"
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
