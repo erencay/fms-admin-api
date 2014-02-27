@@ -20,10 +20,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "activesupport"
+  s.add_runtime_dependency "builder"
   s.add_runtime_dependency "colorize"
   s.add_development_dependency "minitest", '3.2.0'
   s.add_development_dependency "webmock"
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
-  s.add_development_dependency "builder"
 end
