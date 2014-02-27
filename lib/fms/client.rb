@@ -73,10 +73,30 @@ module FMS
   end
 
   class Response < ActiveSupport::HashWithIndifferentAccess
+    SUCCEED_CODE = 'NetConnection.Call.Success'
 
     def initialize(content)
-      hash = Hash.from_xml(content)
-      update(hash) if hash
+      super(Hash.from_xml(content)) if content.present?
+    end
+
+    def level
+      self[:result][:level]
+    end
+
+    def code
+      self[:result][:code]
+    end
+
+    def timestamp
+      self[:result][:timestamp]
+    end
+
+    def data
+      self[:result][:data]
+    end
+
+    def succeed?
+      code == SUCCEED_CODE
     end
 
   end

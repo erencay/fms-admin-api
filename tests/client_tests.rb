@@ -40,7 +40,11 @@ class ClientTests < BaseTestCase
     response = c.get_live_stream_stats(:app_inst => 'live', :stream => 'cam1')
 
     assert_requested(:get, url)
-    assert_equal "cam1", response[:result][:data][:publisher][:name]
+    assert_equal "status", response.level
+    assert_equal "NetConnection.Call.Success", response.code
+    assert_equal "Mon May 14 22:44:35 2012", response.timestamp
+    assert_equal "cam1", response.data[:publisher][:name]
+    assert_equal true, response.succeed?
   end
 
   def test_should_use_timeout_param
