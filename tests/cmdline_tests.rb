@@ -63,13 +63,13 @@ class CommandLineTests < BaseTestCase
     assert_help_message
   end
 
-  def test_should_return_response_as_string
+  def test_should_return_response_as_hash
     url = "http://fms.example.com:1111/admin/getLiveStreams?appInst=live&apswd=fms&auser=fms"
     stub_request(:get, url).to_return(:body => GET_LIVE_STREAMS)
 
     run_command ["get_live_streams", "--host=fms.example.com", "--app_inst=live"]
     assert_requested(:get, url)
-    assert_command_stdout_contains GET_LIVE_STREAMS.strip
+    assert_command_stdout_contains Hash.from_xml(GET_LIVE_STREAMS.strip).to_s
   end
 
   def test_should_have_timeout_option
@@ -120,7 +120,7 @@ GET_LIVE_STREAMS = %Q{
   <name>_defaultRoot_:_defaultVHost_:::_0</name>
   <data>
     <_0>stream1</_0>
-    <_1>stream1</_2>
+    <_1>stream1</_1>
   </data>
 </result>
 }

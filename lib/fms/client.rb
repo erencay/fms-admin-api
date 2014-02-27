@@ -1,6 +1,5 @@
 require 'net/http'
-require 'rexml/document'
-require 'active_support'
+require 'active_support/all'
 
 module FMS
   class Client
@@ -73,18 +72,11 @@ module FMS
 
   end
 
-  class Response
+  class Response < ActiveSupport::HashWithIndifferentAccess
 
     def initialize(content)
-      @content = content
-    end
-
-    def to_xml
-      REXML::Document.new @content
-    end
-
-    def to_s
-      @content
+      hash = Hash.from_xml(content)
+      update(hash) if hash
     end
 
   end

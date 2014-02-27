@@ -1,4 +1,3 @@
-require 'rexml/xpath'
 require 'tests_helper'
 
 class ClientTests < BaseTestCase
@@ -33,26 +32,15 @@ class ClientTests < BaseTestCase
     assert_requested(:get, "http://fms.example.com:1111/admin/reloadApp?appInst=live/cam1&apswd=fms&auser=fms")
   end
 
-  def test_should_return_response_as_xml
+  def test_should_return_response_as_hash
     url = "http://fms.example.com:1111/admin/getLiveStreamStats?appInst=live&apswd=fms&auser=fms&stream=cam1"
     stub_request(:get, url).to_return(:body => GET_LIVE_STREAM_STATS)
 
     c = FMS::Client.new(:host => 'fms.example.com')
-    xml_resp = c.get_live_stream_stats(:app_inst => 'live', :stream => 'cam1').to_xml
+    response = c.get_live_stream_stats(:app_inst => 'live', :stream => 'cam1')
 
     assert_requested(:get, url)
-    assert_equal "cam1", REXML::XPath.first(xml_resp, '/result/data/publisher/name').text
-  end
-
-  def test_should_return_response_as_raw_string
-    url = "http://fms.example.com:1111/admin/getLiveStreamStats?appInst=live&apswd=fms&auser=fms&stream=cam1"
-    stub_request(:get, url).to_return(:body => GET_LIVE_STREAM_STATS)
-
-    c = FMS::Client.new(:host => 'fms.example.com')
-    str_resp = c.get_live_stream_stats(:app_inst => 'live', :stream => 'cam1').to_s
-
-    assert_requested(:get, url)
-    assert str_resp.include?('<name>cam1</name>')
+    assert_equal "cam1", response[:result][:data][:publisher][:name]
   end
 
   def test_should_use_timeout_param
